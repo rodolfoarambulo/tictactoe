@@ -1,10 +1,14 @@
 'use strict';
 
 const gameBoard = (() => {
-  let _gameState = ['0', '1', '2', '3', '4', '5', '6', '7', '8'];
+  let _gameState = ['X', 'O', 'X', 'X', 'O', 'O', 'X', 'O', ''];
 
   const getGameState = () => {
     return _gameState;
+  }
+
+  const getGameStateByIndex = (index) => {
+    return _gameState[index];
   }
 
   const changeGameState = (index, marker) => {
@@ -17,7 +21,7 @@ const gameBoard = (() => {
     }
   }
 
-  return {getGameState, changeGameState, resetGameState};
+  return { getGameState, getGameStateByIndex, changeGameState, resetGameState };
 
 })();
 
@@ -28,5 +32,24 @@ const playerFactory = (name, marker) => {
 }
 
 const displayController = (() => {
-  
+  const _gameDisplay = document.querySelector('.gameDisplay');
+
+  const _generateButton = (index) => {
+    let newButton = document.createElement('button');
+    newButton.textContent = gameBoard.getGameStateByIndex(index);
+    return newButton;
+  }
+
+  const displayGameBoard = () => {
+    while(_gameDisplay.firstChild) {
+      _gameDisplay.removeChild(_gameDisplay.firstChild);
+    }
+    
+    for (let i = 0; i < 9; i++) {
+      _gameDisplay.appendChild(_generateButton(i));
+    }
+  }
+
+  return { displayGameBoard };
+
 })();
