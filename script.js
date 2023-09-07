@@ -11,6 +11,89 @@ const gameBoard = (() => {
     displayController.displayGameBoard();
   }
 
+  const checkWinCondition = () => {
+    // horizontals
+    if (
+      _currentPlayer.getMarker() === getGameStateByIndex(0)
+      && _currentPlayer.getMarker() === getGameStateByIndex(1)
+      && _currentPlayer.getMarker() === getGameStateByIndex(2)
+    ) {
+      _winGame();
+      return;
+    }
+
+    if (
+      _currentPlayer.getMarker() === getGameStateByIndex(3)
+      && _currentPlayer.getMarker() === getGameStateByIndex(4)
+      && _currentPlayer.getMarker() === getGameStateByIndex(5)
+    ) {
+      _winGame();
+      return;
+    }
+
+    if (
+      _currentPlayer.getMarker() === getGameStateByIndex(6)
+      && _currentPlayer.getMarker() === getGameStateByIndex(7)
+      && _currentPlayer.getMarker() === getGameStateByIndex(8)
+    ) {
+      _winGame();
+      return;
+    }
+
+    // verticals
+    if (
+      _currentPlayer.getMarker() === getGameStateByIndex(0)
+      && _currentPlayer.getMarker() === getGameStateByIndex(3)
+      && _currentPlayer.getMarker() === getGameStateByIndex(6)
+    ) {
+      _winGame();
+      return;
+    }
+
+    if (
+      _currentPlayer.getMarker() === getGameStateByIndex(1)
+      && _currentPlayer.getMarker() === getGameStateByIndex(4)
+      && _currentPlayer.getMarker() === getGameStateByIndex(7)
+    ) {
+      _winGame();
+      return;
+    }
+
+    if (
+      _currentPlayer.getMarker() === getGameStateByIndex(2)
+      && _currentPlayer.getMarker() === getGameStateByIndex(5)
+      && _currentPlayer.getMarker() === getGameStateByIndex(8)
+    ) {
+      _winGame();
+      return;
+    }
+
+    // diagonals 
+    if (
+      _currentPlayer.getMarker() === getGameStateByIndex(0)
+      && _currentPlayer.getMarker() === getGameStateByIndex(4)
+      && _currentPlayer.getMarker() === getGameStateByIndex(8)
+    ) {
+      _winGame();
+      return;
+    }
+
+    if (
+      _currentPlayer.getMarker() === getGameStateByIndex(2)
+      && _currentPlayer.getMarker() === getGameStateByIndex(4)
+      && _currentPlayer.getMarker() === getGameStateByIndex(6)
+    ) {
+      _winGame();
+      return;
+    }
+
+  }
+
+  const _winGame = () => {
+    alert(`${_currentPlayer.getName()} wins!`);
+    resetGameState();
+  }
+
   const getGameState = () => {
     return _gameState;
   }
@@ -28,6 +111,8 @@ const gameBoard = (() => {
       _gameState[i] = '';
     }
     setCurrentPlayer({});
+    setOtherPlayer({});
+    displayController.displayGameBoard();
   }
 
   const getCurrentPlayer = () => {
@@ -64,7 +149,9 @@ const gameBoard = (() => {
     getOtherPlayer,
     setCurrentPlayer,
     setOtherPlayer,
-    swapCurrentPlayer
+    swapCurrentPlayer,
+
+    checkWinCondition
   };
 
 })();
@@ -76,12 +163,13 @@ const displayController = (() => {
     let newButton = document.createElement('button');
     newButton.value = index;
     newButton.textContent = gameBoard.getGameStateByIndex(index);
-    newButton.addEventListener('click', () =>{
-      if(gameBoard.getGameStateByIndex(newButton.value) === '') {
+    newButton.addEventListener('click', () => {
+      if (gameBoard.getGameStateByIndex(newButton.value) === '') {
         gameBoard.changeGameState(newButton.value);
+        displayController.displayGameBoard();
+        gameBoard.checkWinCondition();
         gameBoard.swapCurrentPlayer();
       }
-      displayController.displayGameBoard();
     });
     return newButton;
   }
